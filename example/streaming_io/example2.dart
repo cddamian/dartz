@@ -11,7 +11,7 @@ main() async {
   final libDir = Platform.script.resolve("../../lib/");
   final dartzPath = libDir.resolve("dartz.dart");
 
-  final Conveyor<Free<IOOp, dynamic>, String> dartzPublicClasses = IO.fileLineReader(dartzPath.path) // stream file lines
+  final Conveyor<Free<IOOp<dynamic>, dynamic>, String> dartzPublicClasses = IO.fileLineReader(dartzPath.path) // stream file lines
       .filter((line) => line.startsWith("part '"))                                                   // find 'part' declarations
       .map((partDeclaration) => partDeclaration.substring(6, partDeclaration.length-2))              // extract part path
       .flatMap((partName) => IO.fileLineReader(libDir.resolve(partName).path)                        // stream part file lines

@@ -2,7 +2,7 @@
 
 part of dartz;
 
-abstract class TraversableMonadPlus<F> implements Traversable<F>, MonadPlus<F> {
+abstract mixin class TraversableMonadPlus<F> implements Traversable<F>, MonadPlus<F> {
   // TODO: Only requires ApplicativePlus, not MonadPlus
   Tuple2<F, F> partition<A>(F fa, bool f(A a)) =>
       foldRight(fa, tuple2(empty(), empty()), (A a, acc) => f(a)

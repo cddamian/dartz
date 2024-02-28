@@ -49,7 +49,7 @@ abstract class TraversableOps<F, A> extends FunctorOps<F, A> with FoldableOps<F,
       cast(traverse(StateM, (a) => StateM.modify(cast((previous) => bMonoid.append(cast(previous), f(a))))).state(bMonoid.zero())); */
 }
 
-class TraversableOpsTraversable<F extends TraversableOps> extends Traversable<F> {
+class TraversableOpsTraversable<F extends TraversableOps<dynamic, dynamic>> extends Traversable<F> {
   //@override G traverse<G>(Applicative<G> gApplicative, F fa, G f(a));// => fa.traverse(gApplicative, f);
   @override B foldRight<A, B>(F fa, B z, B f(A a, B previous)) => fa.foldRight(z, cast(f));
   @override B foldMap<A, B>(Monoid<B> bMonoid, F fa, B f(A a)) => fa.foldMap(bMonoid, cast(f));

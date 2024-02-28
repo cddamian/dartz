@@ -10,8 +10,8 @@ abstract class RandOp<T> {}
 class NextInt extends RandOp<int> {}
 
 // Technique: Lift primitives into composable Free algebra and add combinators
-class RandOps<F> extends FreeOps<F, RandOp> {
-  RandOps(FreeComposer<F, RandOp> composer) : super(composer);
+class RandOps<F> extends FreeOps<F, RandOp<dynamic>> {
+  RandOps(FreeComposer<F, RandOp<dynamic>> composer) : super(composer);
 
   Free<F, int> nextInt() => liftOp(new NextInt());
 
@@ -20,7 +20,7 @@ class RandOps<F> extends FreeOps<F, RandOp> {
 }
 
 // Technique: Express RandOp using side effecting random number generator
-Future unsafeRandInterpreter(RandOp op) {
+Future<dynamic> unsafeRandInterpreter(RandOp<dynamic> op) {
   if (op is NextInt) {
     return new Future.value(new Random().nextInt(1<<32));
 
@@ -30,7 +30,7 @@ Future unsafeRandInterpreter(RandOp op) {
 }
 
 // Technique: Express RandOp using mocked random number
-Evaluation<String, IMap<String, IVector<String>>, IVector<String>, IMap<String, int>, int> mockRandInterpreter(int mockedRandomInt, RandOp op) {
+Evaluation<String, IMap<String, IVector<String>>, IVector<String>, IMap<String, int>, int> mockRandInterpreter(int mockedRandomInt, RandOp<dynamic> op) {
   if (op is NextInt) {
     return mockIO.MockM.pure(mockedRandomInt);
 

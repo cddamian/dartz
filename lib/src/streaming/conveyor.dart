@@ -87,18 +87,18 @@ abstract class Conveyor<F, O> implements MonadPlusOps<Conveyor<F, dynamic>, O> {
     return cast(go(this, nil()));
   }
 */
-  static Task<IList<O>> runLogTask<O>(Conveyor<Task, O> cto) {
-    Task<IList<O>> go(Conveyor<Task, O> cur, IList<O> acc) =>
+  static Task<IList<O>> runLogTask<O>(Conveyor<Task<dynamic>, O> cto) {
+    Task<IList<O>> go(Conveyor<Task<dynamic>, O> cur, IList<O> acc) =>
       cur.interpret((h, t) => go(t, cons(h, acc)),
           (req, recv) => req.attempt().bind((Either<Object, dynamic> e) => go(Try(() => recv(e)), acc)),
           (err) => err == End ? new Task(() => new Future.value(acc.reverse())) : new Task(() => new Future.error(err)));
     return go(cto, nil());
   }
 
-  static Free<IOOp, IList<O>> runLogIO<O>(Conveyor<Free<IOOp, dynamic>, O> cio) {
-    Free<IOOp, IList<O>> go(Conveyor<Free<IOOp, dynamic>, O> cur, IList<O> acc) =>
+  static Free<IOOp<dynamic>, IList<O>> runLogIO<O>(Conveyor<Free<IOOp<dynamic>, dynamic>, O> cio) {
+    Free<IOOp<dynamic>, IList<O>> go(Conveyor<Free<IOOp<dynamic>, dynamic>, O> cur, IList<O> acc) =>
       cur.interpret((h, t) => go(t, cons(h, acc)),
-          (req, recv) => liftF<IOOp, Either<Object, dynamic>>(new Attempt(req)).flatMap((e) => go(Try(() => recv(e)), acc)),
+          (req, recv) => liftF<IOOp<dynamic>, Either<Object, dynamic>>(new Attempt(req)).flatMap((e) => go(Try(() => recv(e)), acc)),
           (err) => err == End ? new Pure(acc.reverse()) : liftF(new Fail(err)));
     return go(cio, nil());
   }

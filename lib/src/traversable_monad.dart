@@ -2,7 +2,7 @@
 
 part of dartz;
 
-abstract class TraversableMonad<F> implements Traversable<F>, Monad<F> {
+mixin TraversableMonad<F> implements Traversable<F>, Monad<F> {
   //G traverseM<G>(Applicative<G> gApplicative, F fa, G /** really G<F<A>> **/ f(a)) => gApplicative.map(traverse(gApplicative, fa, f), (F ffb) => join(ffb));
 }
 

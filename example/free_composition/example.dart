@@ -7,16 +7,16 @@ import 'free_rand.dart';
 import 'dart:async';
 
 // Technique: Compose IOOp and RandOp algebras, deriving Free algebras and interpreters capable of handling both.
-final ioAndRand = new Free2<IOOp, RandOp>();
-final ioOps = new IOOps<Either<IOOp, RandOp>>(ioAndRand.firstComposer);
-final randOps = new RandOps<Either<IOOp, RandOp>>(ioAndRand.secondComposer);
-final unsafePerformIOAndRand = ioAndRand.interpreter<Future>(FutureM, unsafeIOInterpreter, unsafeRandInterpreter);
+final ioAndRand = new Free2<IOOp<dynamic>, RandOp<dynamic>>();
+final ioOps = new IOOps<Either<IOOp<dynamic>, RandOp<dynamic>>>(ioAndRand.firstComposer);
+final randOps = new RandOps<Either<IOOp<dynamic>, RandOp<dynamic>>>(ioAndRand.secondComposer);
+final unsafePerformIOAndRand = ioAndRand.interpreter<Future<dynamic>>(FutureM, unsafeIOInterpreter, unsafeRandInterpreter);
 
 // Technique: Construct RT program, sequencing both RandOp and IOOp through the composed algebra
 final thinkOfNumber = randOps.nextIntBetween(1, 5);
 final promptUser = ioOps.println("I'm thinking of a number between 1 and 5. Guess which one!");
 final readUserGuess = ioOps.readln().map<Option<int>>((s) => catching(() => int.parse(s!)).toOption());
-final checkUserGuess = (int myNumber) => (Option<int> maybeUserGuess) => maybeUserGuess.map<Free<Either<IOOp, RandOp>, Unit>>(
+final checkUserGuess = (int myNumber) => (Option<int> maybeUserGuess) => maybeUserGuess.map<Free<Either<IOOp<dynamic>, RandOp<dynamic>>, Unit>>(
     (userGuess) => (userGuess == myNumber)
         ? ioOps.println("O... M... G... you're like telepathic!!!")
         : ioOps.println("Sorry... I was thinking of $myNumber..."))

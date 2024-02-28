@@ -57,9 +57,9 @@ Function1<A, C> composeF<A, B, C>(Function1<B, C> f, Function1<A, B> g) => (a) =
 
 Function1<A, B> constF<A, B>(B b) => (A a) => b;
 
-class Function0TraversableMonad extends Traversable<Function0> with Applicative<Function0>, Monad<Function0>, TraversableMonad<Function0> {
-  @override Function0 pure<A>(A a) => () => a;
-  @override Function0 bind<A, B>(covariant Function0<A> fa, covariant Function1<A, Function0<B>> f) => () => f(fa())();
+class Function0TraversableMonad extends Traversable<Function0<dynamic>> with Applicative<Function0<dynamic>>, Monad<Function0<dynamic>>, TraversableMonad<Function0<dynamic>> {
+  @override Function0<dynamic> pure<A>(A a) => () => a;
+  @override Function0<dynamic> bind<A, B>(covariant Function0<A> fa, covariant Function1<A, Function0<B>> f) => () => f(fa())();
   @override B foldMap<A, B>(Monoid<B> bMonoid, covariant Function0<A> fa, B f(A a)) => f(fa());
 }
 

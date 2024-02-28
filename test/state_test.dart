@@ -5,8 +5,8 @@ import 'laws.dart';
 void main() {
   test("demo", () {
     final M = stateM<num>();
-    final State st = M.pure("hej");
-    final State inc = M.modify((n) => n+1);
+    final State<dynamic, dynamic> st = M.pure("hej");
+    final State<dynamic, dynamic> inc = M.modify((n) => n+1);
     expect((inc.andThen(inc).andThen(st)).map((v) => "$v!").run(5), tuple2("hej!", 7));
   });
 

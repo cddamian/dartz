@@ -5,7 +5,7 @@ part of dartz;
 // Internally implemented using imperative loops and mutations, for stack safety and performance.
 // The external API should be safe and referentially transparent, though.
 
-abstract class IList<A> implements TraversableMonadPlusOps<IList, A> {
+abstract class IList<A> implements TraversableMonadPlusOps<IList<dynamic>, A> {
   Option<A> get headOption;
 
   Option<IList<A>> get tailOption;
@@ -460,31 +460,31 @@ class Nil<A> extends IList<A> {
 IList<A> nil<A>() => new Nil();
 IList<A> cons<A>(A head, IList<A> tail) => new Cons(head, tail);
 
-final MonadPlus<IList> IListMP = new MonadPlusOpsMonadPlus<IList>((a) => new Cons(a, nil()), nil);
+final MonadPlus<IList<dynamic>> IListMP = new MonadPlusOpsMonadPlus<IList<dynamic>>((a) => new Cons(a, nil()), nil);
 MonadPlus<IList<A>> ilistMP<A>() => cast(IListMP);
-final Traversable<IList> IListTr = new TraversableOpsTraversable<IList>();
+final Traversable<IList<dynamic>> IListTr = new TraversableOpsTraversable<IList<dynamic>>();
 
 class IListMonoid<A> extends Monoid<IList<A>> {
   @override IList<A> zero() => nil();
   @override IList<A> append(IList<A> l1, IList<A> l2) => l1.plus(l2);
 }
 
-final Monoid<IList> IListMi = new IListMonoid();
+final Monoid<IList<dynamic>> IListMi = new IListMonoid();
 Monoid<IList<A>> ilistMi<A>() => new IListMonoid();
 
 class IListTMonad<M> extends Functor<M> with Applicative<M>, Monad<M> {
   Monad<M> _stackedM;
   IListTMonad(this._stackedM);
-  Monad underlying() => IListMP;
+  Monad<dynamic> underlying() => IListMP;
 
   @override M pure<A>(A a) => _stackedM.pure(new Cons(a, nil()));
 
-  M _concat(M a, M b) => _stackedM.bind(a, (IList l1) => _stackedM.map(b, (IList l2) => l1.plus(l2)));
+  M _concat(M a, M b) => _stackedM.bind(a, (IList<dynamic> l1) => _stackedM.map(b, (IList<dynamic> l2) => l1.plus(l2)));
 
-  @override M bind<A, B>(M mla, M f(A a)) => _stackedM.bind(mla, (IList l) => l.map<M>(cast(f)).foldLeft(_stackedM.pure(nil()), _concat));
+  @override M bind<A, B>(M mla, M f(A a)) => _stackedM.bind(mla, (IList<dynamic> l) => l.map<M>(cast(f)).foldLeft(_stackedM.pure(nil()), _concat));
 }
 
-Monad ilistTMonad(Monad mmonad) => new IListTMonad(mmonad);
+Monad<dynamic> ilistTMonad(Monad<dynamic> mmonad) => new IListTMonad(mmonad);
 
 IList<int> iota(int n) {
   Trampoline<IList<int>> go(int i, IList<int> result) => i > 0 ? tcall(() => go(i-1, new Cons(i-1, result))) : treturn(result);
@@ -501,7 +501,7 @@ class _IListIterable<A> extends Iterable<A> {
   @override Iterator<A> get iterator => new _IListIterator<A>(_l);
 }
 
-class _IListIterator<A> extends Iterator<A> {
+class _IListIterator<A> implements Iterator<A> {
   bool _started = false;
   IList<A> _l;
   A? _current;

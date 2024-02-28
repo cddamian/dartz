@@ -2,7 +2,7 @@
 
 part of dartz;
 
-abstract class Monad<F> implements Applicative<F> {
+mixin Monad<F> implements Applicative<F> {
   F bind<A, B>(F fa, F f(A a));
   
   F join(F ffa) => bind(ffa, (F f) => f);
@@ -36,7 +36,7 @@ abstract class MonadOps<F, A> implements ApplicativeOps<F, A> {
   F replace<B>(B replacement) => map((_) => replacement);
 }
 
-class MonadOpsMonad<F extends MonadOps> extends Functor<F> with Applicative<F>, Monad<F> {
+class MonadOpsMonad<F extends MonadOps<dynamic, dynamic>> extends Functor<F> with Applicative<F>, Monad<F> {
   final Function1<dynamic, F> _pure;
   MonadOpsMonad(this._pure);
   @override F pure<A>(a) => _pure(a);

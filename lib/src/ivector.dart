@@ -2,7 +2,7 @@
 
 part of dartz;
 
-class IVector<A> implements TraversableMonadPlusOps<IVector, A> {
+class IVector<A> implements TraversableMonadPlusOps<IVector<dynamic>, A> {
   final IMap<int, A> _elementsByIndex;
   final int _offset;
   final int _length;
@@ -180,14 +180,14 @@ IVector<A> ivector<A>(Iterable<A> iterable) => new IVector.from(iterable);
 
 IVector<A> emptyVector<A>() => new IVector.emptyVector();
 
-final MonadPlus<IVector> IVectorMP = new MonadPlusOpsMonadPlus<IVector>((a) => emptyVector().appendElement(a), emptyVector);
+final MonadPlus<IVector<dynamic>> IVectorMP = new MonadPlusOpsMonadPlus<IVector<dynamic>>((a) => emptyVector().appendElement(a), emptyVector);
 MonadPlus<IVector<A>> ivectorMP<A>() => cast(IVectorMP);
-final Traversable<IVector> IVectorTr = new TraversableOpsTraversable<IVector>();
+final Traversable<IVector<dynamic>> IVectorTr = new TraversableOpsTraversable<IVector<dynamic>>();
 
 class IVectorMonoid<A> extends Monoid<IVector<A>> {
   @override IVector<A> zero() => emptyVector();
   @override IVector<A> append(IVector<A> a1, IVector<A> a2) => a1.plus(a2);
 }
 
-final Monoid<IVector> IVectorMi = new IVectorMonoid();
+final Monoid<IVector<dynamic>> IVectorMi = new IVectorMonoid();
 Monoid<IVector<A>> ivectorMi<A>() => new IVectorMonoid();

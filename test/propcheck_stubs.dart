@@ -8,7 +8,7 @@ import 'package:test/test.dart';
 import 'enumerators_stubs.dart';
 
 class QuickCheck {
-  QuickCheck({seed: 0, maxSuccesses: 100, maxSize: 100, quiet: false});
+  QuickCheck({seed = 0, maxSuccesses = 100, maxSize = 100, quiet = false});
 
   void check(Property property) {
     expect(property.check(), completion(equals(true)));

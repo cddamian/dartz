@@ -6,7 +6,7 @@ part of dartz;
 
 // TODO: naive implementation. does too much work and too many allocations.
 
-class AVLTree<A> implements FoldableOps<AVLTree, A> {
+class AVLTree<A> implements FoldableOps<AVLTree<dynamic>, A> {
   final Order<A> _order;
   final _AVLNode<A> _root;
 
@@ -287,7 +287,7 @@ class AVLTreeMonoid<A> extends Monoid<AVLTree<A>> {
   @override AVLTree<A> append(AVLTree<A> a1, AVLTree<A> t2) => t2.foldLeft(a1, (p, a) => p.insert(a));
 }
 
-final Foldable<AVLTree> AVLTreeFo = new FoldableOpsFoldable<AVLTree>();
+final Foldable<AVLTree<dynamic>> AVLTreeFo = new FoldableOpsFoldable<AVLTree<dynamic>>();
 
 class _AVLTreeIterable<A> extends Iterable<A> {
   final AVLTree<A> _tree;
@@ -295,7 +295,7 @@ class _AVLTreeIterable<A> extends Iterable<A> {
   @override Iterator<A> get iterator => new _AVLTreeIterator(_tree._root._unsafeGetNonEmpty());
 }
 
-class _AVLTreeIterator<A> extends Iterator<A> {
+class _AVLTreeIterator<A> implements Iterator<A> {
 
   bool _started = false;
   _NonEmptyAVLNode<A>? _currentNode;

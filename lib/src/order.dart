@@ -49,7 +49,7 @@ class _AnonymousOrder<A> extends Order<A> {
 Order<A> order<A>(OrderF<A> f) => new _AnonymousOrder(f);
 Order<A> orderBy<A, B>(Order<B> o, B by(A a)) => new _AnonymousOrder((A a1, A a2) => o.order(by(a1), by(a2)));
 
-class ComparableOrder<A extends Comparable> extends Order<A> {
+class ComparableOrder<A extends Comparable<dynamic>> extends Order<A> {
   final Type _tpe;
 
   ComparableOrder(): _tpe = A;
@@ -64,14 +64,14 @@ class ComparableOrder<A extends Comparable> extends Order<A> {
   @override int get hashCode => 0;
 }
 
-final Order _comparableOrder = new ComparableOrder();
-Order<A> comparableOrder<A extends Comparable>() => new ComparableOrder();
+final Order<dynamic> _comparableOrder = new ComparableOrder();
+Order<A> comparableOrder<A extends Comparable<dynamic>>() => new ComparableOrder();
 
 class ToStringOrder<A extends Object> extends Order<A> {
   Ordering order(A a1, A a2) => _comparableOrder.order(a1.toString(), a2.toString());
 }
 
-final Order toStringOrder = new ToStringOrder();
+final Order<dynamic> toStringOrder = new ToStringOrder();
 
 class MinSemigroup<A> extends Semigroup<A> {
   final Order<A> _aOrder;

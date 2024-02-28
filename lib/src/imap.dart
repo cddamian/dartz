@@ -169,10 +169,10 @@ class IMap<K, V> implements TraversableOps<IMap<K, dynamic>, V> {
 }
 
 
-IMap<K, V> imap<K extends Comparable, V>(Map<K, V> m) => new IMap.from(comparableOrder(), m);
+IMap<K, V> imap<K extends Comparable<dynamic>, V>(Map<K, V> m) => new IMap.from(comparableOrder(), m);
 IMap<K, V> imapWithOrder<K, K2 extends K, V>(Order<K> o, Map<K2, V> m) => new IMap.from(o, m);
-IMap<K, V> emptyMap<K extends Comparable, V>() => new IMap._internal(comparableOrder(), _emptyIMapAVLNode());
-IMap<K, V> singletonMap<K extends Comparable, V>(K k, V v) => emptyMap<K, V>().put(k, v);
+IMap<K, V> emptyMap<K extends Comparable<dynamic>, V>() => new IMap._internal(comparableOrder(), _emptyIMapAVLNode());
+IMap<K, V> singletonMap<K extends Comparable<dynamic>, V>(K k, V v) => emptyMap<K, V>().put(k, v);
 
 class IMapMonoid<K, V> extends Monoid<IMap<K, V>> {
   final Semigroup<V> _vSemigroup;
@@ -188,13 +188,13 @@ class IMapMonoid<K, V> extends Monoid<IMap<K, V>> {
               (m1v) => p.put(kv.value1, _vSemigroup.append(m1v, kv.value2))));
 }
 
-Monoid<IMap<K, V>> imapMonoid<K extends Comparable, V>(Semigroup<V> si) => new IMapMonoid(si, comparableOrder());
+Monoid<IMap<K, V>> imapMonoid<K extends Comparable<dynamic>, V>(Semigroup<V> si) => new IMapMonoid(si, comparableOrder());
 Monoid<IMap<K, V>> imapMonoidWithOrder<K, V>(Semigroup<V> si, Order<K> order) => new IMapMonoid(si, order);
 
-final Monoid<IMap> IMapMi = imapMonoid(secondSemigroup());
-Monoid<IMap<K, V>> imapMi<K extends Comparable, V>() => imapMonoid(secondSemigroup());
+final Monoid<IMap<dynamic, dynamic>> IMapMi = imapMonoid(secondSemigroup());
+Monoid<IMap<K, V>> imapMi<K extends Comparable<dynamic>, V>() => imapMonoid(secondSemigroup());
 
-final Traversable<IMap> IMapTr = new TraversableOpsTraversable<IMap>();
+final Traversable<IMap<dynamic, dynamic>> IMapTr = new TraversableOpsTraversable<IMap<dynamic, dynamic>>();
 
 abstract class _IMapAVLNode<K, V> implements FunctorOps<_IMapAVLNode<K, dynamic>, V> {
   const _IMapAVLNode();
@@ -497,7 +497,7 @@ class _IMapValueIterable<K, V> extends _IMapIterable<K, V, V> {
   @override Iterator<V> get iterator => _m._tree.empty ? new _IMapValueIterator(null) : new _IMapValueIterator(_m._tree._unsafeGetNonEmpty());
 }
 
-abstract class _IMapAVLNodeIterator<K, V, A> extends Iterator<A> {
+abstract class _IMapAVLNodeIterator<K, V, A> implements Iterator<A> {
 
   bool _started = false;
   _NonEmptyIMapAVLNode<K, V>? _currentNode;

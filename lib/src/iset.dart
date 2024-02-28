@@ -2,12 +2,12 @@
 
 part of dartz;
 
-class ISet<A> implements FoldableOps<ISet, A> {
+class ISet<A> implements FoldableOps<ISet<dynamic>, A> {
   final AVLTree<A> _tree;
 
   ISet(this._tree);
   factory ISet.empty(Order<A> order) => new ISet(new AVLTree<A>(order, emptyAVLNode()));
-  factory ISet.fromFoldable(Order<A> order, Foldable foldable, fa) => foldable.foldLeft(fa, new ISet.empty(order), (p, a) => p.insert(cast(a)));
+  factory ISet.fromFoldable(Order<A> order, Foldable<dynamic> foldable, fa) => foldable.foldLeft(fa, new ISet.empty(order), (p, a) => p.insert(cast(a)));
   factory ISet.fromIList(Order<A> order, IList<A> l) => new ISet.fromFoldable(order, IListTr, l);
   factory ISet.fromIterable(Order<A> order, Iterable<A> i) => i.fold(new ISet.empty(order), (acc, a) => acc.insert(a));
 
@@ -93,12 +93,12 @@ class ISet<A> implements FoldableOps<ISet, A> {
   void forEach(void sideEffect(A a)) => foldLeft(null, (_, a) => sideEffect(a));
 }
 
-final Foldable<ISet> ISetFo = new FoldableOpsFoldable<ISet>();
+final Foldable<ISet<dynamic>> ISetFo = new FoldableOpsFoldable<ISet<dynamic>>();
 
-ISet<A> emptySet<A extends Comparable>() => new ISet.empty(comparableOrder());
+ISet<A> emptySet<A extends Comparable<dynamic>>() => new ISet.empty(comparableOrder());
 ISet<A> emptySetWithOrder<A>(Order<A> order) => new ISet.empty(order);
 
-ISet<A> iset<A extends Comparable>(Iterable<A> i) => new ISet.fromIterable(comparableOrder(), i);
+ISet<A> iset<A extends Comparable<dynamic>>(Iterable<A> i) => new ISet.fromIterable(comparableOrder(), i);
 ISet<A> isetWithOrder<A, A2 extends A>(Order<A> order, Iterable<A2> i) => new ISet.fromIterable(order, i);
 
 class ISetMonoid<A> extends Monoid<ISet<A>> {

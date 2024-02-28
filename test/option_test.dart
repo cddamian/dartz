@@ -21,7 +21,7 @@ void main() {
   });
 /*
   test("transformer demo", () {
-    final Monad<List<Option>> M = optionTMonad(ListMP) as Monad<List<Option>>;
+    final Monad<List<Option<dynamic>>> M = optionTMonad(ListMP) as Monad<List<Option<dynamic>>>;
     final expected = [some("a!"), some("a!!"), none(), some("c!"), some("c!!")];
     expect(M.bind([some("a"), none(), some("c")], (e) => [some(e + "!"), some(e + "!!")]), expected);
   });

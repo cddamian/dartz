@@ -9,7 +9,7 @@ class _RandomAccessFileRef implements FileRef {
 
 Future<RandomAccessFile> unwrapFileRef(FileRef ref) => ref is _RandomAccessFileRef ? new Future.value(ref._f) : new Future.error("Not a valid FileRef: $ref");
 
-Future unsafeIOInterpreter(IOOp io) {
+Future<dynamic> unsafeIOInterpreter(IOOp<dynamic> io) {
   if (io is Readln) {
     return new Future.value(stdin.readLineSync());
 
@@ -49,6 +49,6 @@ Future unsafeIOInterpreter(IOOp io) {
   }
 }
 
-Future<A> unsafePerformIO<A>(Free<IOOp, A> io) => io.foldMapFuture(unsafeIOInterpreter);
+Future<A> unsafePerformIO<A>(Free<IOOp<dynamic>, A> io) => io.foldMapFuture(unsafeIOInterpreter);
 
-Future<Either<Object, IList<A>>> unsafeConveyIO<A>(Conveyor<Free<IOOp, dynamic>, A> conveyor) => unsafePerformIO(IOM.attempt(Conveyor.runLogIO(conveyor)));
+Future<Either<Object, IList<A>>> unsafeConveyIO<A>(Conveyor<Free<IOOp<dynamic>, dynamic>, A> conveyor) => unsafePerformIO(IOM.attempt(Conveyor.runLogIO(conveyor)));

@@ -2,11 +2,11 @@
 
 part of dartz;
 
-abstract class MonadPlus<F> implements Functor<F>, Applicative<F>, Monad<F>, ApplicativePlus<F> {
+abstract mixin class MonadPlus<F> implements Functor<F>, Applicative<F>, Monad<F>, ApplicativePlus<F> {
   F filter(F fa, bool predicate(a)) => bind(fa, (t) => predicate(t) ? pure(t) : empty());
   F where(F fa, bool predicate(a)) => filter(fa, predicate);
 
-  F unite(F fa, Foldable gFoldable) => bind(fa, (ga) => gFoldable.foldLeft(ga, empty(), (F p, a) => plus(p, pure(a))));
+  F unite(F fa, Foldable<dynamic> gFoldable) => bind(fa, (ga) => gFoldable.foldLeft(ga, empty(), (F p, a) => plus(p, pure(a))));
 }
 
 abstract class MonadPlusOps<F, A> implements MonadOps<F, A>, ApplicativePlusOps<F, A>  {
@@ -14,7 +14,7 @@ abstract class MonadPlusOps<F, A> implements MonadOps<F, A>, ApplicativePlusOps<
   F where(bool predicate(A a));// => filter(predicate);
 }
 
-class MonadPlusOpsMonadPlus<F extends MonadPlusOps> extends Functor<F> with Applicative<F>, ApplicativePlus<F>, Monad<F>, MonadPlus<F> {
+class MonadPlusOpsMonadPlus<F extends MonadPlusOps<dynamic, dynamic>> extends Functor<F> with Applicative<F>, ApplicativePlus<F>, Monad<F>, MonadPlus<F> {
   final Function1<dynamic, F> _pure;
   final Function0<F> _empty;
 

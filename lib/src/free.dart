@@ -31,7 +31,7 @@ abstract class Free<F, A> implements MonadOps<Free<F, dynamic>, A> {
       cast(/*step().*/fold((a) => m.pure(a), (fa) => f(fa), (ffb, f2) => m.bind(ffb.foldMap(m, f), (c) => f2(c).foldMap(m, f))));
 
 
-  Future<A> foldMapFuture(Future f(F fa)) =>
+  Future<A> foldMapFuture(Future<dynamic> f(F fa)) =>
     /*step().*/ fold((a) => new Future.microtask(() => a), (fa) => f(fa).then((a) => cast<A>(a)), (ffb, f2) => ffb.foldMapFuture(f).then((c) => f2(c).foldMapFuture(f)));
 
   Evaluation<E, R, W, S, A> foldMapEvaluation<E, R, W, S>(EvaluationMonad<E, R, W, S> m, Evaluation<E, R, W, S, dynamic> f(F fa)) =>
@@ -135,7 +135,7 @@ class FreeMonad<F> extends Functor<Free<F, dynamic>> with Applicative<Free<F, dy
 
 }
 
-final FreeMonad FreeM = new FreeMonad();
+final FreeMonad<dynamic> FreeM = new FreeMonad();
 FreeMonad<F> freeM<F>() => new FreeMonad();
 
 Free<F, A> liftF<F, A>(F fa) => new Suspend(fa);

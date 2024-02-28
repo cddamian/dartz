@@ -5,7 +5,7 @@ part of dartz;
 // universally quantified semigroup
 // might seem pointless to separate from semigroup in dart, but clarifies intent
 
-abstract class Plus<F> {
+abstract mixin class Plus<F> {
   F plus<A>(F f1, F f2);
 }
 

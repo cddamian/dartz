@@ -8,20 +8,20 @@ class PushSymbol extends RPNOp<Unit> {
   final String symbol;
   PushSymbol(this.symbol);
 }
-Free<RPNOp, Unit> pushSymbol(String symbol) => liftF(new PushSymbol(symbol));
+Free<RPNOp<dynamic>, Unit> pushSymbol(String symbol) => liftF(new PushSymbol(symbol));
 
 class Push extends RPNOp<Unit> {
   final double value;
   Push(this.value);
 }
-Free<RPNOp, Unit> push(double value) => liftF(new Push(value));
+Free<RPNOp<dynamic>, Unit> push(double value) => liftF(new Push(value));
 
 class Pop extends RPNOp<double> {}
-final Free<RPNOp, double> pop = liftF(new Pop());
+final Free<RPNOp<dynamic>, double> pop = liftF(new Pop());
 
-final Free<RPNOp, Unit> dup = pop.bind((i) => push(i).andThen(push(i)));
+final Free<RPNOp<dynamic>, Unit> dup = pop.bind((i) => push(i).andThen(push(i)));
 
-final Free<RPNOp, Unit> multiply = Free.map2(pop, pop, (double a, double b) => a*b).bind(push);
+final Free<RPNOp<dynamic>, Unit> multiply = Free.map2(pop, pop, (double a, double b) => a*b).bind(push);
 
 void main() {
   final M = new EvaluationMonad<String, IMap<String, double>, IList<String>, IList<double>>(ilistMi());

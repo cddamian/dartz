@@ -2,7 +2,7 @@
 
 part of dartz;
 
-abstract class ApplicativePlus<F> implements Applicative<F>, PlusEmpty<F> {
+mixin ApplicativePlus<F> implements Applicative<F>, PlusEmpty<F> {
   F prependElement<A>(F fa, A a) => plus(pure(a), fa);
   F appendElement<A>(F fa, A a) => plus(fa, pure(a));
 }

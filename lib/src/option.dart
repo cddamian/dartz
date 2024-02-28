@@ -2,7 +2,7 @@
 
 part of dartz;
 
-abstract class Option<A> implements TraversableMonadPlusOps<Option, A> {
+abstract class Option<A> implements TraversableMonadPlusOps<Option<dynamic>, A> {
   const Option();
 
   B fold<B>(B ifNone(), B ifSome(A a));
@@ -218,7 +218,7 @@ Option<A> some<A>(A a) => new Some(a);
 Option<A> option<A>(bool test, A value) => test ? some(value) : none();
 Option<A> optionOf<A>(A? value) => value != null ? some(value) : none();
 
-class OptionMonadPlus extends MonadPlus<Option> with Monad<Option>, ApplicativePlus<Option>, Applicative<Option>, Functor<Option>, PlusEmpty<Option>, Plus<Option> {
+class OptionMonadPlus extends MonadPlus<Option<dynamic>> with Monad<Option<dynamic>>, ApplicativePlus<Option<dynamic>>, Applicative<Option<dynamic>>, Functor<Option<dynamic>>, PlusEmpty<Option<dynamic>>, Plus<Option<dynamic>> {
   @override Option<B> map<A, B>(covariant Option<A> fa, B f(A a)) => fa.map(f);
   @override Option<B> ap<A, B>(covariant Option<A> fa, covariant Option<Function1<A, B>> ff) => fa.ap(ff);
   @override Option<B> bind<A, B>(covariant Option<A> fa, covariant Function1<A, Option<B>> f) => fa.bind(f);
@@ -227,7 +227,7 @@ class OptionMonadPlus extends MonadPlus<Option> with Monad<Option>, ApplicativeP
   @override Option<A> pure<A>(A a) => some(a);
 }
 
-class OptionTraversable extends Traversable<Option> {
+class OptionTraversable extends Traversable<Option<dynamic>> {
   @override B foldMap<A, B>(Monoid<B> bMonoid, covariant Option<A> fa, B f(A a)) => fa.foldMap(bMonoid, f);
   @override Option<B> map<A, B>(covariant Option<A> fa, B f(A a)) => fa.map(f);
 }
@@ -249,7 +249,7 @@ class _SingletonIterable<A> extends Iterable<A> {
   @override Iterator<A> get iterator => new _SingletonIterator(_singleton);
 }
 
-class _SingletonIterator<A> extends Iterator<A> {
+class _SingletonIterator<A> implements Iterator<A> {
   final A _singleton;
   int _moves = 0;
   _SingletonIterator(this._singleton);

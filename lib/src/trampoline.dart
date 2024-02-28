@@ -4,7 +4,7 @@ part of dartz;
 
 // TODO: unify with Free?
 
-abstract class Trampoline<A> implements MonadOps<Trampoline, A> {
+abstract class Trampoline<A> implements MonadOps<Trampoline<dynamic>, A> {
   Trampoline<B> pure<B>(B b) => new _TPure(b);
   @override Trampoline<B> map<B>(B f(A a)) => bind((a) => pure(f(a)));
   @override Trampoline<B> bind<B>(Function1<A, Trampoline<B>> f) => new _TBind<B, A>(this, cast(f));
@@ -14,7 +14,7 @@ abstract class Trampoline<A> implements MonadOps<Trampoline, A> {
   @override Trampoline<Tuple2<A, B>> strengthR<B>(B b) => map((a) => tuple2(a, b));
 
   A run() {
-    _TBind? current = cast(_unsafeGetTBind());
+    _TBind<dynamic, dynamic>? current = cast(_unsafeGetTBind());
     if (current == null) {
       return _unsafeGetTPure()!._a;
     }
@@ -66,7 +66,7 @@ class _TBind<A, B> extends Trampoline<A> {
   _TBind<A, B>? _unsafeGetTBind() => this;
 }
 
-final Monad<Trampoline> TrampolineM = new MonadOpsMonad((a) => new _TPure(a));
+final Monad<Trampoline<dynamic>> TrampolineM = new MonadOpsMonad((a) => new _TPure(a));
 
 Trampoline<T> treturn<T>(T t) => new _TPure(t);
 

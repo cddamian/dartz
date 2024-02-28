@@ -2,7 +2,7 @@
 
 part of dartz;
 
-abstract class MonadCatch<F> implements Monad<F> {
+mixin MonadCatch<F> implements Monad<F> {
   F attempt<A>(F fa); // F<A> => F<Either<Object, A>>
   F fail<A>(Object err); // Object => F<A>
 }

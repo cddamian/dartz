@@ -41,7 +41,7 @@ class StateMonad<S> extends Functor<State<S, dynamic>> with Applicative<State<S,
   State<S, Unit> modify(S f(S s)) => new State((S s) => new Tuple2(unit, f(s)));
 }
 
-final StateMonad StateM = new StateMonad();
+final StateMonad<dynamic> StateM = new StateMonad();
 StateMonad<S> stateM<S>() => new StateMonad();
 
 class StateT<F, S, A> implements MonadOps<StateT<F, S, dynamic>, A> {
@@ -51,8 +51,8 @@ class StateT<F, S, A> implements MonadOps<StateT<F, S, dynamic>, A> {
   StateT(this._FM, this._run);
 
   F run(S s) => _run(s);
-  F value(S s) => _FM.map(_run(s), (Tuple2 t) => t.value1);
-  F state(S s) => _FM.map(_run(s), (Tuple2 t) => t.value2);
+  F value(S s) => _FM.map(_run(s), (Tuple2<dynamic, dynamic> t) => t.value1);
+  F state(S s) => _FM.map(_run(s), (Tuple2<dynamic, dynamic> t) => t.value2);
 
   StateT<F, S, B> pure<B>(B b) => new StateT(_FM, (S s) => _FM.pure(new Tuple2(b, s)));
   @override StateT<F, S, B> map<B>(B f(A a)) => new StateT(_FM, (S s) => _FM.map(_run(s), (Tuple2<A, B> t) => t.map1(f)));
@@ -86,5 +86,5 @@ class StateTMonad<F, S> extends Functor<StateT<F, S, dynamic>> with Applicative<
   StateT<F, S, A> withState<A>(StateT<F, S, A> f(S s)) => get().bind(f);
 }
 
-final StateTMonad<Trampoline, dynamic> TStateM = new StateTMonad(TrampolineM);
+final StateTMonad<Trampoline<dynamic>, dynamic> TStateM = new StateTMonad(TrampolineM);
 StateTMonad<Trampoline<F>, S> tstateM<F, S>() => cast(TStateM);

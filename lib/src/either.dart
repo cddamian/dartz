@@ -2,7 +2,7 @@
 
 part of dartz;
 
-abstract class Either<L, R> implements TraversableMonadOps<Either<L, dynamic>, R> {
+sealed class Either<L, R> implements TraversableMonadOps<Either<L, dynamic>, R> {
   const Either();
 
   B fold<B>(B ifLeft(L l), B ifRight(R r));
@@ -217,9 +217,9 @@ class EitherMonad<L> extends MonadOpsMonad<Either<L, dynamic>> {
   EitherMonad(): super(right);
 }
 
-final EitherMonad EitherM = new EitherMonad();
+final EitherMonad<dynamic> EitherM = new EitherMonad();
 EitherMonad<L> eitherM<L>() => new EitherMonad();
-final Traversable<Either> EitherTr = new TraversableOpsTraversable<Either>();
+final Traversable<Either<dynamic, dynamic>> EitherTr = new TraversableOpsTraversable<Either<dynamic, dynamic>>();
 Traversable<Either<L, R>> eitherTr<L, R>() => new TraversableOpsTraversable();
 /*
 class EitherTMonad<M> extends Functor<M> with Applicative<M>, Monad<M> {

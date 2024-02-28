@@ -5,7 +5,7 @@ part of dartz;
 // universally quantified monoid
 // might seem pointless to separate from monoid in dart, but clarifies intent
 
-abstract class PlusEmpty<F> implements Plus<F> {
+mixin PlusEmpty<F> implements Plus<F> {
   F empty<A>(); // () => F[A]
 }
 

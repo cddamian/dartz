@@ -18,7 +18,7 @@ void main() {
     expect(IListMi.append(l2, l2.reverse()), ilist([2,2,4,4,6,6,6,6,4,4,2,2]));
     expect(l2.foldLeft<int>(0, (a, b) => a + b), 24);
 /*
-    final Monad<Option<IList>> OptionIListM = new IListTMonad(OptionMP as Monad<Option<IList>>);
+    final Monad<Option<IList<dynamic>>> OptionIListM = new IListTMonad(OptionMP as Monad<Option<IList<dynamic>>>);
     final ol = some(l);
     final stackedResult = OptionIListM.bind(ol, (i) => i % 2 == 1 ? some(new Cons("$i!", nil<String>())) : some(nil()));
     expect(stackedResult, some(ilist(["1!", "3!"])));
@@ -120,8 +120,8 @@ void main() {
 
   test("equality", () {
     qc.check(forall2(intILists, intILists, (dynamicL1, dynamicL2) {
-      final l1 = dynamicL1 as IList<int>;
-      final l2 = dynamicL2 as IList<int>;
+      final l1 = dynamicL1;
+      final l2 = dynamicL2;
           return  (l1 == l1) &&
             (l2 == l2) &&
             (l1 == l1.reverse().reverse()) &&

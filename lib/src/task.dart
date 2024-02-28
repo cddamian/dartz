@@ -2,7 +2,7 @@
 
 part of dartz;
 
-class Task<A> implements MonadCatchOps<Task, A> {
+class Task<A> implements MonadCatchOps<Task<dynamic>, A> {
   final Function0<Future<A>> _run;
 
   Task(this._run);
@@ -162,7 +162,7 @@ class Task<A> implements MonadCatchOps<Task, A> {
     parTupled6(a, b, c, d, e, f).map((abcdef) => abcdef.apply(fn));
 }
 
-class TaskMonadCatch extends Functor<Task> with Applicative<Task>, Monad<Task>, MonadCatch<Task> {
+class TaskMonadCatch extends Functor<Task<dynamic>> with Applicative<Task<dynamic>>, Monad<Task<dynamic>>, MonadCatch<Task<dynamic>> {
 
   @override Task<Either<Object, A>> attempt<A>(covariant Task<A> fa) => fa.attempt();
 
@@ -173,7 +173,7 @@ class TaskMonadCatch extends Functor<Task> with Applicative<Task>, Monad<Task>, 
   @override Task<A> pure<A>(A a) => new Task(() => new Future.microtask(() => a));
 }
 
-final MonadCatch<Task> TaskMC = new TaskMonadCatch();
+final MonadCatch<Task<dynamic>> TaskMC = new TaskMonadCatch();
 MonadCatch<Task<A>> taskMC<A>() => cast(TaskMC);
 
 extension TaskFlattenOps<A> on Task<Task<A>> {

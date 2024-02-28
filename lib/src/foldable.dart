@@ -2,7 +2,7 @@
 
 part of dartz;
 
-abstract class Foldable<F> {
+abstract mixin class Foldable<F> {
   // def foldMap[A, B: Monoid](fa: Option[A], f: A => B): B
   B foldMap<A, B>(Monoid<B> bMonoid, F fa, B f(A a));
 
@@ -41,7 +41,7 @@ abstract class Foldable<F> {
   //G foldMapM<A, B, G>(Monad<G> m, Monoid<B> bMonoid, F fa, G f(A a)) => foldMap(monoid(() => m.pure(bMonoid.zero()), cast(m.lift2(bMonoid.append))), fa, f);
 }
 
-abstract class FoldableOps<F, A> {
+mixin FoldableOps<F, A> {
   B foldMap<B>(Monoid<B> bMonoid, B f(A a));
 
   B foldRight<B>(B z, B f(A a, B previous)) => foldMap<Endo<B>>(endoMi(), curry2(f))(z);
@@ -73,7 +73,7 @@ abstract class FoldableOps<F, A> {
 
 }
 
-class FoldableOpsFoldable<F extends FoldableOps> extends Foldable<F> {
+class FoldableOpsFoldable<F extends FoldableOps<dynamic, dynamic>> extends Foldable<F> {
   @override B foldMap<A, B>(Monoid<B> bMonoid, F fa, B f(A a)) => fa.foldMap(bMonoid, cast(f));
   @override B foldRight<A, B>(F fa, B z, B f(A a, B previous)) => fa.foldRight(z, cast(f));
   @override B foldLeft<A, B>(F fa, B z, B f(B previous, A a)) => fa.foldLeft(z, cast(f));

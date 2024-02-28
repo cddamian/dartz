@@ -2,7 +2,7 @@
 
 part of dartz;
 
-class IdMonad extends Functor with Applicative, Monad {
+class IdMonad extends Functor<dynamic> with Applicative<dynamic>, Monad<dynamic> {
   @override A pure<A>(A a) => a;
   @override B bind<A, B>(covariant A fa, covariant Function1<A, B> f) => f(fa);
 
@@ -11,7 +11,7 @@ class IdMonad extends Functor with Applicative, Monad {
 
 final IdMonad IdM = new IdMonad();
 
-class IdTraversable extends Traversable {
+class IdTraversable extends Traversable<dynamic> {
   @override B foldMap<A, B>(Monoid<B> bMonoid, covariant A fa, B f(A a)) => f(fa);
 
   @override B map<A, B>(covariant A fa, B f(A a)) => f(fa);

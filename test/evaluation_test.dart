@@ -16,7 +16,7 @@ void main() {
           return M.put(newState).andThen(M.write(new Tuple2(ilist(["State transition from $oldState to $newState"]), "!")));
         });
 
-    final Evaluation p =
+    final Evaluation<dynamic, dynamic, dynamic, dynamic, dynamic> p =
         inc.andThen(
           M.pure("hej").bind((v) =>
          inc.andThen(M.get().bind((s) => (s == 7) ? M.asks((suffix) => v + suffix) : M.raiseError("Gaah! State wasn't 7!!!"))))

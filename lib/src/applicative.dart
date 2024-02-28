@@ -2,7 +2,7 @@
 
 part of dartz;
 
-abstract class Applicative<F> implements Functor<F> {
+mixin Applicative<F> implements Functor<F> {
   F pure<A>(A a);
   F ap<A, B>(F fa, F ff);
 

@@ -4,7 +4,7 @@
 
 void main() {
   /*
-  final Monad<Either<String, IList>> M = EitherM.composeM(IListMP, IListTr) as Monad<Either<String, IList>>;
+  final Monad<Either<String, IList<dynamic>>> M = EitherM.composeM(IListMP, IListTr) as Monad<Either<String, IList<dynamic>>>;
 
   group("Monad composition", () {
     test("succeed", () {

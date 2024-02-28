@@ -4,7 +4,7 @@
 void main() {
   /*
   group("Applicative composition", () {
-    final Applicative<Either<String, Option<IList>>> A = EitherM.composeA(OptionMP.composeA(IListMP)) as Applicative<Either<String, Option<IList>>>;
+    final Applicative<Either<String, Option<IList<dynamic>>>> A = EitherM.composeA(OptionMP.composeA(IListMP)) as Applicative<Either<String, Option<IList<dynamic>>>>;
 
     test("succeed", () {
       expect(A.map3(A.pure("hello"), right(some(ilist(["functor", "applicative"]))), A.pure("!"), (a,b,c) => a+" "+b+c),

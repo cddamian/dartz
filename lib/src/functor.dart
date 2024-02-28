@@ -2,14 +2,14 @@
 
 part of dartz;
 
-abstract class Functor<F> {
+abstract mixin class Functor<F> {
   F map<A, B>(F fa, B f(A a));
 
   F strengthL<A, B>(F fa, B b) => map(fa, (a) => tuple2(b, a));
 
   F strengthR<A, B>(F fa, B b) => map(fa, (a) => tuple2(a, b));
 
-  Functor<F> /** Functor<F<G<_>>> **/ composeF(Functor G) => new ComposedFunctor(this, G);
+  Functor<F> /** Functor<F<G<_>>> **/ composeF(Functor<dynamic> G) => new ComposedFunctor(this, G);
 }
 
 // Compose Functor<F<_>> with Functor<G<_>>, yielding Functor<F<G<_>>>
